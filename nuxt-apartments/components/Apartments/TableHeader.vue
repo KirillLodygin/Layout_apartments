@@ -14,7 +14,7 @@
           aria-label="Сортировать по площади"
       >
         <span class="table-header__label">S, м²</span>
-        <SortableIcon :sort-order="sortField === 'area' ? sortOrder : null" />
+        <SortableIcon :sort-order="sortField === 'area' ? sortOrder : null" :is-active="sortField === 'area'" />
       </button>
 
       <!-- Этаж -->
@@ -26,7 +26,7 @@
           aria-label="Сортировать по этажу"
       >
         <span class="table-header__label">Этаж</span>
-        <SortableIcon :sort-order="sortField === 'floor' ? sortOrder : null" />
+        <SortableIcon :sort-order="sortField === 'floor' ? sortOrder : null" :is-active="sortField === 'floor'" />
       </button>
 
       <!-- Цена -->
@@ -38,7 +38,7 @@
           aria-label="Сортировать по цене"
       >
         <span class="table-header__label">Цена, ₽</span>
-        <SortableIcon :sort-order="sortField === 'price' ? sortOrder : null" />
+        <SortableIcon :sort-order="sortField === 'price' ? sortOrder : null" :is-active="sortField === 'price'" />
       </button>
     </div>
   </div>

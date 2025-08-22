@@ -1,18 +1,20 @@
+// Variables
+$breakpoint-md: 959px;
+$breakpoint-lg: 1200px;
+$breakpoint-xl: 1440px;
+$transition: all 0.3s ease;
+$font-primary: 'PT Root UI', sans-serif;
+$color-text: #0b1739;
+$color-border: rgba(0, 0, 0, 0.1);
+
+// Base styles
 .page {
+  --gap: clamp(28px, 80px - (1200px - 100vw) * 0.1, 80px);
+  
   padding: clamp(48px, 9.6vw, 96px) clamp(20px, 8vw, 80px);
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
-  gap: clamp(28px, 80px - (1200px - 100vw) * 0.1, 80px);
-
-  @media (max-width: 959px) {
-    padding: 48px clamp(20px, 5.6vw, 54px);
-    gap: 28px;
-  }
-
-  @media (min-width: 1440px) {
-    justify-content: center;
-  }
+  gap: var(--gap);
 
   section {
     width: auto;
@@ -21,58 +23,65 @@
     margin: 0;
 
     h1 {
-      font-weight: 700;
-      font-size: 54px;
-      line-height: 55px;
+      font: 700 54px/55px $font-primary;
       letter-spacing: 0;
       width: 100%;
     }
   }
+
+  @media (max-width: $breakpoint-md) {
+    padding: 48px clamp(20px, 5.6vw, 54px);
+    --gap: 28px;
+  }
+
+  @media (min-width: $breakpoint-xl) {
+    justify-content: center;
+  }
 }
 
 .apartments {
+  --card-width: 801px;
+  --card-gap: 0;
+  
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-start;
-  gap: 0;
-  width: 801px;
-  transition: all 0.3s ease;
+  gap: var(--card-gap);
+  width: var(--card-width);
   max-width: 100%;
-  margin: 0 0 48px 0;
+  margin: 0 0 48px;
+  transition: $transition;
 
-  @media (max-width: 1200px) {
-    width: calc(801px - (1200px - 100vw) * 0.5);
+  @media (max-width: $breakpoint-lg) {
+    --card-width: calc(801px - (1200px - 100vw) * 0.5);
   }
 
-  @media (max-width: 959px) {
-    width: 506px;
-    gap: 24px;
+  @media (max-width: $breakpoint-md) {
+    --card-width: 506px;
+    --card-gap: 24px;
   }
 
   &__card {
-    background: #fff;
-    padding: 16px 0;
-    box-sizing: border-box;
+    --card-gap: 20px;
+    --card-padding: 16px 0;
+    --card-min-height: 120px;
+    
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    background: #fff;
+    padding: var(--card-padding);
+    box-sizing: border-box;
     align-items: flex-start;
-    gap: 20px;
+    gap: var(--card-gap);
     width: 100%;
-    height: auto;
-    min-height: 120px;
-    border-bottom: 1px solid #0000001A;
-    transition: all 0.3s ease;
+    min-height: var(--card-min-height);
+    border-bottom: 1px solid $color-border;
+    transition: $transition;
 
-    @media (max-width: 1200px) {
-      gap: calc(20px - (1200px - 100vw) * 0.02);
-      padding: 16px calc(0px + (1200px - 100vw) * 0.01);
-    }
-
-    .apartments__card-info-description,
-    .apartments__card-info-details {
-      transition: color 0.3s ease;
+    &-info {
+      &-description,
+      &-details {
+        transition: color 0.3s ease;
+      }
     }
 
     &:hover {
@@ -82,17 +91,21 @@
       }
     }
 
-    @media (max-width: 959px) {
-      border: 1px solid #0000001A;
+    @media (max-width: $breakpoint-lg) {
+      --card-gap: calc(20px - (1200px - 100vw) * 0.02);
+      --card-padding: 16px calc(0px + (1200px - 100vw) * 0.01);
+    }
+
+    @media (max-width: $breakpoint-md) {
+      border: 1px solid $color-border;
       border-radius: 8px;
       width: 100%;
-      height: auto;
       min-height: 112px;
       gap: 20px;
       padding: 16px 24px;
       flex-direction: row-reverse;
       justify-content: space-between;
-      transition: transform 0.2s;
+      transition: transform 0.2s, $transition;
 
       &:hover {
         transform: translateY(-4px);
@@ -100,88 +113,86 @@
     }
 
     &-image {
-      width: 80px;
-      height: 80px;
+      --size: 80px;
+      --img-width: 66px;
+      --img-height: 63px;
+      
       display: flex;
       justify-content: center;
       align-items: center;
       flex-shrink: 0;
-      transition: all 0.3s ease;
-
-      @media (max-width: 1200px) {
-        width: calc(80px - (1200px - 100vw) * 0.05);
-        height: calc(80px - (1200px - 100vw) * 0.05);
-      }
+      width: var(--size);
+      height: var(--size);
+      transition: $transition;
 
       img {
-        width: 66px;
-        height: 63px;
+        width: var(--img-width);
+        height: var(--img-height);
         object-fit: cover;
-        transition: all 0.3s ease;
+        transition: $transition;
+      }
 
-        @media (max-width: 1200px) {
-          width: calc(66px - (1200px - 100vw) * 0.04);
-          height: calc(63px - (1200px - 100vw) * 0.035);
-        }
+      @media (max-width: $breakpoint-lg) {
+        --size: calc(80px - (1200px - 100vw) * 0.05);
+        --img-width: calc(66px - (1200px - 100vw) * 0.04);
+        --img-height: calc(63px - (1200px - 100vw) * 0.035);
       }
     }
 
     &-info {
-      padding: 0;
+      --info-gap: 20px;
+      
       display: flex;
-      justify-content: flex-start;
+      padding: 0;
       align-items: flex-start;
-      gap: 20px;
+      gap: var(--info-gap);
       flex: 1;
       min-width: 0;
-      transition: all 0.3s ease;
+      transition: $transition;
 
-      @media (max-width: 1200px) {
-        gap: calc(20px - (1200px - 100vw) * 0.02);
+      @media (max-width: $breakpoint-lg) {
+        --info-gap: calc(20px - (1200px - 100vw) * 0.02);
       }
 
-      @media (max-width: 959px) {
+      @media (max-width: $breakpoint-md) {
         flex-direction: column;
-        gap: 16px;
-        flex: 1;
+        --info-gap: 16px;
       }
 
       &-title {
-        font-family: 'PT Root UI', sans-serif;
-        font-weight: 700;
-        font-size: 18px;
+        font: 700 18px/1.2 $font-primary;
         margin-bottom: 8px;
-        transition: all 0.3s ease;
+        transition: $transition;
 
-        @media (max-width: 1200px) {
+        @media (max-width: $breakpoint-lg) {
           font-size: calc(18px - (1200px - 100vw) * 0.006);
         }
       }
 
       &-description {
-        font-family: 'PT Root UI', sans-serif;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 24px;
-        letter-spacing: 0;
-        width: 281px;
-        color: #0b1739;
+        --desc-width: 281px;
+        --desc-font-size: 16px;
+        --desc-line-height: 24px;
+        
+        font: 500 var(--desc-font-size)/var(--desc-line-height) $font-primary;
+        color: $color-text;
         margin: 0;
+        width: var(--desc-width);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        transition: all 0.3s ease;
+        transition: $transition;
 
-        @media (max-width: 1200px) {
-          width: calc(281px - (1200px - 100vw) * 0.35);
-          font-size: calc(16px - (1200px - 100vw) * 0.005);
-          line-height: calc(24px - (1200px - 100vw) * 0.01);
+        @media (max-width: $breakpoint-lg) {
+          --desc-width: calc(281px - (1200px - 100vw) * 0.35);
+          --desc-font-size: calc(16px - (1200px - 100vw) * 0.005);
+          --desc-line-height: calc(24px - (1200px - 100vw) * 0.01);
         }
 
-        @media (max-width: 959px) {
-          font-size: 14px;
-          line-height: 20px;
-          width: auto;
+        @media (max-width: $breakpoint-md) {
+          --desc-font-size: 14px;
+          --desc-line-height: 20px;
+          --desc-width: auto;
           max-width: none;
           white-space: normal;
         }
@@ -189,15 +200,10 @@
 
       &-details {
         display: flex;
-        justify-content: flex-start;
         align-items: flex-start;
-        font-family: 'PT Root UI', sans-serif;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        letter-spacing: 0;
-        color: #0b1739;
         gap: 20px;
+        font: 400 16px/24px $font-primary;
+        color: $color-text;
         flex-shrink: 0;
         transition: all 0.3s ease;
 

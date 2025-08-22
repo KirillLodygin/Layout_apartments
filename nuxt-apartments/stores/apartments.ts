@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia'
 
+/**
+ * Represents an apartment listing
+ */
 export interface Apartment {
   id: number
   description: string
@@ -10,6 +13,28 @@ export interface Apartment {
   image: string
 }
 
+/**
+ * Available sort fields for apartments
+ */
+export enum SortField {
+  PRICE = 'price',
+  AREA = 'area',
+  ROOMS = 'rooms',
+  FLOOR = 'floor',
+  DESCRIPTION = 'description'
+}
+
+/**
+ * Available sort orders
+ */
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc'
+}
+
+/**
+ * Filter state for apartments
+ */
 export interface FilterState {
   minPrice: number
   maxPrice: number
@@ -18,10 +43,54 @@ export interface FilterState {
   rooms: number[]
 }
 
+/**
+ * Type guard to check if a value is a valid Apartment
+ */
+function isApartment(apt: unknown): apt is Apartment {
+  return (
+    typeof apt === 'object' &&
+    apt !== null &&
+    'id' in apt &&
+    'description' in apt &&
+    'rooms' in apt &&
+    'floor' in apt &&
+    'area' in apt &&
+    'price' in apt &&
+    'image' in apt
+  )
+}
+
+/**
+ * Type for the apartments store state
+ */
+interface ApartmentsState {
+  apartments: Apartment[]
+  filteredResult: Apartment[]
+  visibleCount: number
+  loading: boolean
+  filter: FilterState
+  sortField: SortField | null
+  sortOrder: SortOrder
+  filterCache: Map<string, Apartment[]>
+  filterError: string | null
+}
+
+interface ApartmentsActions {
+  parseArea(area: unknown): number
+  parseApartmentData(data: unknown): Apartment[]
+  loadApartments(): Promise<void>
+  matchesFilter(apt: Apartment, filter: FilterState): boolean
+  getCacheKey(filter: FilterState, sortField: SortField | null, sortOrder: SortOrder): string
+  applyFilters(filter: FilterState): Promise<void>
+  showMore(): void
+  sortApartments(field: SortField, order: SortOrder): void
+  sortApartmentsInternal(list: Apartment[]): Apartment[]
+}
+
 export const useApartmentsStore = defineStore('apartments', {
-  state: () => ({
-    apartments: [] as Apartment[],
-    filteredResult: [] as Apartment[],
+  state: (): ApartmentsState => ({
+    apartments: [],
+    filteredResult: [],
     visibleCount: 20,
     loading: false,
     filter: {
@@ -29,185 +98,263 @@ export const useApartmentsStore = defineStore('apartments', {
       maxPrice: 20_000_000,
       areaMin: 0,
       areaMax: 200,
-      rooms: [] as number[],
-    } as FilterState,
-    sortField: null as string | null,
-    sortOrder: 'asc' as 'asc' | 'desc',
-    filterCache: new Map<string, Apartment[]>(),
-    filterError: null as string | null,
+      rooms: []
+    },
+    sortField: null,
+    sortOrder: SortOrder.ASC,
+    filterCache: new Map(),
+    filterError: null
   }),
 
   actions: {
-    async loadApartments() {
-      this.loading = true
+    /**
+     * Parse area value from string to number
+     */
+    parseArea(area: unknown): number {
       try {
-        const res = await fetch('/apartments.json')
-        const data = await res.json()
-
-        this.apartments = (data || []).map((a: any) => ({
-          id: Number(a.id),
-          description: String(a.description ?? ''),
-          rooms: Number(a.rooms ?? 0),
-          floor: String(a.floor ?? ''),
-          area: (() => {
-            try {
-              const cleanValue = String(a.area || '')
-                .replace(/\s+/g, '')
-                .replace(',', '.')
-
-              const num = Number(cleanValue)
-              return isNaN(num) || num <= 0 ? 0 : num
-            } catch (e) {
-              return 0
-            }
-          })(),
-          price: Number(a.price ?? 0),
-          image: String(a.image ?? ''),
-        }))
-
-        this.filteredResult = [...this.apartments]
-      } catch (e) {
-        console.error('Failed to load apartments', e)
-        this.apartments = []
-        this.filteredResult = []
-        this.filterError = 'Ошибка загрузки данных'
-      } finally {
-        this.loading = false
+        const cleanValue = String(area || '')
+          .replace(/\s+/g, '')
+          .replace(',', '.')
+        const num = Number(cleanValue)
+        return isNaN(num) || num <= 0 ? 0 : num
+      } catch {
+        return 0
       }
     },
 
-    async applyFilters(filter: FilterState) {
-      this.loading = true
-      this.filterError = null
+    /**
+     * Parse apartment data from API response
+     */
+    parseApartmentData(data: unknown): Apartment[] {
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid data format: expected an array')
+      }
 
-      const cacheKey = JSON.stringify({
-        ...filter,
-        sortField: this.sortField,
-        sortOrder: this.sortOrder,
-      })
-
-      try {
-        if (this.filterCache.has(cacheKey)) {
-          this.filteredResult = this.filterCache.get(cacheKey)!
-          this.visibleCount = 20
-          return
+      return data.map((item, index) => {
+        const apartment: Apartment = {
+          id: Number(item?.id ?? index),
+          description: String(item?.description ?? ''),
+          rooms: Number(item?.rooms ?? 0),
+          floor: String(item?.floor ?? ''),
+          area: this.parseArea(item?.area),
+          price: Math.max(0, Number(item?.price ?? 0)),
+          image: String(item?.image ?? '')
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 600))
+        if (!isApartment(apartment)) {
+          throw new Error(`Invalid apartment data at index ${index}`)
+        }
 
-
-        const filtered = this.apartments.filter((apt) => {
-          const priceOk =
-            apt.price >= filter.minPrice && apt.price <= filter.maxPrice
-          const areaOk =
-            apt.area >= filter.areaMin && apt.area <= filter.areaMax
-          const roomsOk =
-            filter.rooms.length === 0 || filter.rooms.includes(apt.rooms)
-          return priceOk && areaOk && roomsOk
-        })
-
-        const sorted = this.sortApartmentsInternal(filtered)
-
-        this.filteredResult = sorted
-        this.visibleCount = 20
-        this.filterCache.set(cacheKey, sorted)
-      } catch (error) {
-        console.error('Filtering failed:', error)
-        this.filterError = 'Ошибка при фильтрации данных'
-        throw error
-      } finally {
-        this.loading = false
-      }
+        return apartment
+      })
     },
 
-    showMore() {
-      this.visibleCount += 20
+    /**
+     * Check if apartment matches filter criteria
+     */
+    matchesFilter(apt: Apartment, filter: FilterState): boolean {
+      return (
+        apt.price >= filter.minPrice &&
+        apt.price <= filter.maxPrice &&
+        apt.area >= filter.areaMin &&
+        apt.area <= filter.areaMax &&
+        (filter.rooms.length === 0 || filter.rooms.includes(apt.rooms))
+      )
     },
 
-    sortApartments(field: string, order: 'asc' | 'desc') {
-      this.sortField = field
-      this.sortOrder = order
-
-      this.filteredResult = this.sortApartmentsInternal(this.filteredResult)
+    /**
+     * Generate cache key for filter state
+     */
+    getCacheKey(filter: FilterState, sortField: SortField | null, sortOrder: SortOrder): string {
+      return JSON.stringify({
+        minPrice: filter.minPrice,
+        maxPrice: filter.maxPrice,
+        areaMin: filter.areaMin,
+        areaMax: filter.areaMax,
+        rooms: [...filter.rooms].sort(),
+        sortField,
+        sortOrder
+      })
     },
 
+    /**
+     * Internal method to sort apartments array
+     */
     sortApartmentsInternal(list: Apartment[]): Apartment[] {
       if (!this.sortField) return [...list]
 
       const field = this.sortField
-      const order = this.sortOrder || 'asc'
+      const order = this.sortOrder
 
-      return [...list].sort((left, right) => {
-        let va: number | string = (left as any)[field]
-        let vb: number | string = (right as any)[field]
+      return [...list].sort((a, b) => {
+        // Get values to compare
+        const aValue = a[field as keyof Apartment]
+        const bValue = b[field as keyof Apartment]
 
-        if (field === 'floor') {
-          const getFirstNumber = (s: string) => {
-            const m = String(s).match(/-?\d+/)
-            return m ? parseInt(m[0], 10) : 0
+        // Handle different field types
+        if (field === SortField.FLOOR) {
+          // Special handling for floor values (e.g., "2 из 5")
+          const getFloorNumber = (s: string): number => {
+            const match = String(s).match(/(\d+)/)
+            return match ? parseInt(match[1], 10) : 0
           }
-          va = getFirstNumber(String(va))
-          vb = getFirstNumber(String(vb))
-        } else if (field === 'area' || field === 'price' || field === 'rooms') {
-          va = Number(va) || 0
-          vb = Number(vb) || 0
-        } else {
-          va = String(va)
-          vb = String(vb)
+          
+          const aNum = getFloorNumber(String(aValue))
+          const bNum = getFloorNumber(String(bValue))
+          return order === SortOrder.ASC ? aNum - bNum : bNum - aNum
         }
-
-        if (typeof va === 'number' && typeof vb === 'number') {
-          if (va < vb) return order === 'asc' ? -1 : 1
-          if (va > vb) return order === 'asc' ? 1 : -1
-          return 0
-        } else {
-          return order === 'asc'
-            ? String(va).localeCompare(String(vb))
-            : String(vb).localeCompare(String(va))
+        
+        // Handle numeric fields
+        if (field === SortField.AREA || field === SortField.PRICE || field === SortField.ROOMS) {
+          const aNum = Number(aValue) || 0
+          const bNum = Number(bValue) || 0
+          return order === SortOrder.ASC ? aNum - bNum : bNum - aNum
         }
+        
+        // Handle string fields
+        const aStr = String(aValue).toLowerCase()
+        const bStr = String(bValue).toLowerCase()
+        
+        return order === SortOrder.ASC 
+          ? aStr.localeCompare(bStr)
+          : bStr.localeCompare(aStr)
       })
+    },
+
+    /**
+     * Load apartments from the API
+     */
+    async loadApartments() {
+      this.loading = true
+      this.filterError = null
+
+      try {
+        // In a real app, this would be an API call
+        const response = await fetch('/apartments.json')
+        const data = await response.json()
+        this.apartments = this.parseApartmentData(data)
+        this.filteredResult = [...this.apartments]
+      } catch (error) {
+        console.error('Failed to load apartments:', error)
+        this.filterError = 'Failed to load apartments. Please try again later.'
+        this.apartments = []
+        this.filteredResult = []
+      } finally {
+        this.loading = false
+      }
+    },
+
+    /**
+     * Apply filters to apartments
+     */
+    async applyFilters(filter: FilterState) {
+      this.loading = true
+      this.filter = { ...filter }
+      this.visibleCount = 20
+
+      const cacheKey = this.getCacheKey(filter, this.sortField, this.sortOrder)
+      
+      // Check cache first
+      if (this.filterCache.has(cacheKey)) {
+        this.filteredResult = this.filterCache.get(cacheKey) || []
+        this.loading = false
+        return
+      }
+
+      try {
+        // Apply filters
+        let result = this.apartments.filter(apt => this.matchesFilter(apt, filter))
+        
+        // Apply sorting
+        result = this.sortApartmentsInternal(result)
+        
+        // Update cache
+        this.filterCache.set(cacheKey, result)
+        this.filteredResult = result
+      } catch (error) {
+        console.error('Error applying filters:', error)
+        this.filterError = 'Error applying filters. Please try again.'
+        this.filteredResult = []
+      } finally {
+        this.loading = false
+      }
+    },
+
+    /**
+     * Load more apartments (pagination)
+     */
+    showMore() {
+      this.visibleCount += 20
+    },
+
+    /**
+     * Sort apartments by field and order
+     */
+    sortApartments(field: SortField, order: SortOrder) {
+      this.sortField = field
+      this.sortOrder = order
+      this.filteredResult = this.sortApartmentsInternal(this.filteredResult)
     },
   },
 
   getters: {
-    filteredApartments: (state) => {
+    /**
+     * Get paginated list of filtered apartments
+     */
+    filteredApartments: (state): Apartment[] => {
       return state.filteredResult.slice(0, state.visibleCount)
     },
 
-    availableRooms: (state) => {
-      const counts = new Set<number>()
-      for (const a of state.apartments) {
-        counts.add(a.rooms)
-      }
-      return counts
+    /**
+     * Get unique set of available room counts
+     */
+    availableRooms: (state): Set<number> => {
+      return new Set(state.apartments.map(apt => apt.rooms))
     },
 
-    roomCounts: (state) => {
-      const counts: Record<number, boolean> = {}
-      for (const a of state.apartments) {
-        counts[a.rooms] = true
-      }
-      return counts
+    /**
+     * Get object with room counts as keys
+     */
+    roomCounts: (state): Record<number, boolean> => {
+      return state.apartments.reduce((acc, apt) => {
+        acc[apt.rooms] = true
+        return acc
+      }, {} as Record<number, boolean>)
     },
 
-    hasMore: (state) => state.visibleCount < state.filteredResult.length,
+    /**
+     * Check if there are more apartments to load
+     */
+    hasMore: (state): boolean => {
+      return state.visibleCount < state.filteredResult.length
+    },
 
-    minMaxPrice: (state) => {
-      if (state.apartments.length === 0) return { min: 0, max: 20_000_000 }
+    /**
+     * Get min and max price from all apartments
+     */
+    minMaxPrice: (state): { min: number; max: number } => {
+      if (state.apartments.length === 0) {
+        return { min: 0, max: 20_000_000 }
+      }
 
-      const prices = state.apartments.map((a) => a.price)
+      const prices = state.apartments.map(a => a.price)
       return {
-        min: Math.min(...prices),
+        min: Math.max(0, Math.min(...prices)),
         max: Math.max(...prices),
       }
     },
 
-    minMaxArea: (state) => {
-      if (state.apartments.length === 0) return { min: 0, max: 200 }
+    /**
+     * Get min and max area from all apartments
+     */
+    minMaxArea: (state): { min: number; max: number } => {
+      if (state.apartments.length === 0) {
+        return { min: 0, max: 200 }
+      }
 
-      const areas = state.apartments.map((a) => a.area)
+      const areas = state.apartments.map(a => a.area)
       return {
-        min: Math.min(...areas),
+        min: Math.max(0, Math.min(...areas)),
         max: Math.max(...areas),
       }
     },
