@@ -1,47 +1,6 @@
 import { defineStore } from 'pinia'
-
-/**
- * Represents an apartment listing
- */
-export interface Apartment {
-  id: number
-  description: string
-  rooms: number
-  floor: string
-  area: number
-  price: number
-  image: string
-}
-
-/**
- * Available sort fields for apartments
- */
-export enum SortField {
-  PRICE = 'price',
-  AREA = 'area',
-  ROOMS = 'rooms',
-  FLOOR = 'floor',
-  DESCRIPTION = 'description'
-}
-
-/**
- * Available sort orders
- */
-export enum SortOrder {
-  ASC = 'asc',
-  DESC = 'desc'
-}
-
-/**
- * Filter state for apartments
- */
-export interface FilterState {
-  minPrice: number
-  maxPrice: number
-  areaMin: number
-  areaMax: number
-  rooms: number[]
-}
+import type { Apartment, ApartmentsState, FilterState } from '~/types/apartments'
+import { SortField, SortOrder } from '~/types/apartments'
 
 /**
  * Type guard to check if a value is a valid Apartment
@@ -60,34 +19,7 @@ function isApartment(apt: unknown): apt is Apartment {
   )
 }
 
-/**
- * Type for the apartments store state
- */
-interface ApartmentsState {
-  apartments: Apartment[]
-  filteredResult: Apartment[]
-  visibleCount: number
-  loading: boolean
-  filter: FilterState
-  sortField: SortField | null
-  sortOrder: SortOrder
-  filterCache: Map<string, Apartment[]>
-  filterError: string | null
-}
-
-interface ApartmentsActions {
-  parseArea(area: unknown): number
-  parseApartmentData(data: unknown): Apartment[]
-  loadApartments(): Promise<void>
-  matchesFilter(apt: Apartment, filter: FilterState): boolean
-  getCacheKey(filter: FilterState, sortField: SortField | null, sortOrder: SortOrder): string
-  applyFilters(filter: FilterState): Promise<void>
-  showMore(): void
-  sortApartments(field: SortField, order: SortOrder): void
-  sortApartmentsInternal(list: Apartment[]): Apartment[]
-}
-
-export const useApartmentsStore = defineStore('apartments', {
+export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>('apartments', {
   state: (): ApartmentsState => ({
     apartments: [],
     filteredResult: [],
@@ -224,7 +156,7 @@ export const useApartmentsStore = defineStore('apartments', {
     /**
      * Load apartments from the API
      */
-    async loadApartments() {
+    async loadApartments(): Promise<void> {
       this.loading = true
       this.filterError = null
 
@@ -247,7 +179,7 @@ export const useApartmentsStore = defineStore('apartments', {
     /**
      * Apply filters to apartments
      */
-    async applyFilters(filter: FilterState) {
+    async applyFilters(filter: FilterState): Promise<void> {
       this.loading = true
       this.filter = { ...filter }
       this.visibleCount = 20
@@ -263,14 +195,17 @@ export const useApartmentsStore = defineStore('apartments', {
 
       try {
         // Apply filters
-        let result = this.apartments.filter(apt => this.matchesFilter(apt, filter))
-        
-        // Apply sorting
-        result = this.sortApartmentsInternal(result)
-        
-        // Update cache
-        this.filterCache.set(cacheKey, result)
-        this.filteredResult = result
+        this.filteredResult = this.apartments.filter((apt: Apartment) =>
+          this.matchesFilter(apt, filter)
+        )
+
+        // Sort after filtering
+        if (this.sortField) {
+          this.filteredResult = this.sortApartmentsInternal(this.filteredResult)
+        }
+
+        // Cache the result
+        this.filterCache.set(cacheKey, [...this.filteredResult])
       } catch (error) {
         console.error('Error applying filters:', error)
         this.filterError = 'Error applying filters. Please try again.'
@@ -283,14 +218,14 @@ export const useApartmentsStore = defineStore('apartments', {
     /**
      * Load more apartments (pagination)
      */
-    showMore() {
+    showMore(): void {
       this.visibleCount += 20
     },
 
     /**
      * Sort apartments by field and order
      */
-    sortApartments(field: SortField, order: SortOrder) {
+    sortApartments(field: SortField, order: SortOrder): void {
       this.sortField = field
       this.sortOrder = order
       this.filteredResult = this.sortApartmentsInternal(this.filteredResult)
@@ -301,21 +236,21 @@ export const useApartmentsStore = defineStore('apartments', {
     /**
      * Get paginated list of filtered apartments
      */
-    filteredApartments: (state): Apartment[] => {
+    filteredApartments(state: ApartmentsState): Apartment[] {
       return state.filteredResult.slice(0, state.visibleCount)
     },
 
     /**
      * Get unique set of available room counts
      */
-    availableRooms: (state): Set<number> => {
+    availableRooms(state: ApartmentsState): Set<number> {
       return new Set(state.apartments.map(apt => apt.rooms))
     },
 
     /**
      * Get object with room counts as keys
      */
-    roomCounts: (state): Record<number, boolean> => {
+    roomCounts(state: ApartmentsState): Record<number, boolean> {
       return state.apartments.reduce((acc, apt) => {
         acc[apt.rooms] = true
         return acc
@@ -325,14 +260,14 @@ export const useApartmentsStore = defineStore('apartments', {
     /**
      * Check if there are more apartments to load
      */
-    hasMore: (state): boolean => {
+    hasMore(state: ApartmentsState): boolean {
       return state.visibleCount < state.filteredResult.length
     },
 
     /**
      * Get min and max price from all apartments
      */
-    minMaxPrice: (state): { min: number; max: number } => {
+    minMaxPrice(state: ApartmentsState): { min: number; max: number } {
       if (state.apartments.length === 0) {
         return { min: 0, max: 20_000_000 }
       }
@@ -347,7 +282,7 @@ export const useApartmentsStore = defineStore('apartments', {
     /**
      * Get min and max area from all apartments
      */
-    minMaxArea: (state): { min: number; max: number } => {
+    minMaxArea(state: ApartmentsState): { min: number; max: number } {
       if (state.apartments.length === 0) {
         return { min: 0, max: 200 }
       }
