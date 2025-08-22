@@ -1,0 +1,569 @@
+[
+  {
+    "id": 1,
+    "description": "3-комнатная №104",
+    "rooms": 3,
+    "floor": "3 из 17",
+    "area": "55,0",
+    "price": 5500000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 2,
+    "description": "2-комнатная №105",
+    "rooms": 2,
+    "floor": "5 из 9",
+    "area": "35,5",
+    "price": 3500000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 3,
+    "description": "4-комнатная №105",
+    "rooms": 4,
+    "floor": "7 из 12",
+    "area": "78,2",
+    "price": 7800000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 4,
+    "description": "1-комнатная №201",
+    "rooms": 1,
+    "floor": "2 из 14",
+    "area": "31,8",
+    "price": 3200000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 5,
+    "description": "2-комнатная №302",
+    "rooms": 2,
+    "floor": "3 из 14",
+    "area": "42,1",
+    "price": 4100000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 6,
+    "description": "3-комнатная №403",
+    "rooms": 3,
+    "floor": "4 из 15",
+    "area": "56,7",
+    "price": 5700000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 7,
+    "description": "4-комнатная №504",
+    "rooms": 4,
+    "floor": "5 из 15",
+    "area": "80,5",
+    "price": 8100000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 8,
+    "description": "1-комнатная №601",
+    "rooms": 1,
+    "floor": "6 из 16",
+    "area": "30,2",
+    "price": 3100000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 9,
+    "description": "2-комнатная №702",
+    "rooms": 2,
+    "floor": "7 из 16",
+    "area": "40,8",
+    "price": 4000000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 10,
+    "description": "3-комнатная №803",
+    "rooms": 3,
+    "floor": "8 из 16",
+    "area": "54,3",
+    "price": 5500000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 11,
+    "description": "4-комнатная №904",
+    "rooms": 4,
+    "floor": "9 из 17",
+    "area": "79,1",
+    "price": 7900000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 12,
+    "description": "1-комнатная №1001",
+    "rooms": 1,
+    "floor": "10 из 17",
+    "area": "33,5",
+    "price": 3400000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 13,
+    "description": "2-комнатная №1102",
+    "rooms": 2,
+    "floor": "11 из 17",
+    "area": "43,7",
+    "price": 4300000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 14,
+    "description": "3-комнатная №1203",
+    "rooms": 3,
+    "floor": "12 из 17",
+    "area": "57,9",
+    "price": 5800000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 15,
+    "description": "4-комнатная №1304",
+    "rooms": 4,
+    "floor": "13 из 17",
+    "area": "82,0",
+    "price": 8300000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 16,
+    "description": "1-комнатная №1401",
+    "rooms": 1,
+    "floor": "14 из 17",
+    "area": "32,1",
+    "price": 3300000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 17,
+    "description": "2-комнатная №1502",
+    "rooms": 2,
+    "floor": "15 из 17",
+    "area": "41,5",
+    "price": 4200000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 18,
+    "description": "3-комнатная №1603",
+    "rooms": 3,
+    "floor": "16 из 17",
+    "area": "55,8",
+    "price": 5600000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 19,
+    "description": "4-комнатная №1704",
+    "rooms": 4,
+    "floor": "17 из 17",
+    "area": "81,3",
+    "price": 8200000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 20,
+    "description": "2-комнатная №106",
+    "rooms": 2,
+    "floor": "1 из 12",
+    "area": "39,4",
+    "price": 3900000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 21,
+    "description": "3-комнатная №204",
+    "rooms": 3,
+    "floor": "2 из 12",
+    "area": "53,2",
+    "price": 5400000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 22,
+    "description": "1-комнатная №301",
+    "rooms": 1,
+    "floor": "3 из 12",
+    "area": "31,0",
+    "price": 3150000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 23,
+    "description": "4-комнатная №404",
+    "rooms": 4,
+    "floor": "4 из 12",
+    "area": "77,6",
+    "price": 7700000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 24,
+    "description": "2-комнатная №502",
+    "rooms": 2,
+    "floor": "5 из 12",
+    "area": "40,1",
+    "price": 4000000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 25,
+    "description": "3-комнатная №603",
+    "rooms": 3,
+    "floor": "6 из 12",
+    "area": "56,0",
+    "price": 5600000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 26,
+    "description": "1-комнатная №701",
+    "rooms": 1,
+    "floor": "7 из 12",
+    "area": "30,5",
+    "price": 3100000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 27,
+    "description": "4-комнатная №804",
+    "rooms": 4,
+    "floor": "8 из 12",
+    "area": "80,0",
+    "price": 8000000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 28,
+    "description": "2-комнатная №902",
+    "rooms": 2,
+    "floor": "9 из 12",
+    "area": "41,8",
+    "price": 4200000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 29,
+    "description": "3-комнатная №1003",
+    "rooms": 3,
+    "floor": "10 из 12",
+    "area": "57,1",
+    "price": 5700000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 30,
+    "description": "1-комнатная №1101",
+    "rooms": 1,
+    "floor": "11 из 12",
+    "area": "32,7",
+    "price": 3300000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 31,
+    "description": "4-комнатная №1204",
+    "rooms": 4,
+    "floor": "12 из 12",
+    "area": "83,4",
+    "price": 8400000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 32,
+    "description": "2-комнатная №107",
+    "rooms": 2,
+    "floor": "1 из 14",
+    "area": "38,9",
+    "price": 3800000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 33,
+    "description": "3-комнатная №205",
+    "rooms": 3,
+    "floor": "2 из 14",
+    "area": "54,6",
+    "price": 5500000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 34,
+    "description": "1-комнатная №302",
+    "rooms": 1,
+    "floor": "3 из 14",
+    "area": "31,3",
+    "price": 3180000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 35,
+    "description": "4-комнатная №405",
+    "rooms": 4,
+    "floor": "4 из 14",
+    "area": "79,8",
+    "price": 7900000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 36,
+    "description": "2-комнатная №503",
+    "rooms": 2,
+    "floor": "5 из 14",
+    "area": "42,3",
+    "price": 4300000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 37,
+    "description": "3-комнатная №604",
+    "rooms": 3,
+    "floor": "6 из 14",
+    "area": "55,4",
+    "price": 5600000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 38,
+    "description": "1-комнатная №702",
+    "rooms": 1,
+    "floor": "7 из 14",
+    "area": "30,8",
+    "price": 3120000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 39,
+    "description": "4-комнатная №805",
+    "rooms": 4,
+    "floor": "8 из 14",
+    "area": "81,7",
+    "price": 8200000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 40,
+    "description": "2-комнатная №903",
+    "rooms": 2,
+    "floor": "9 из 14",
+    "area": "41,2",
+    "price": 4150000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 41,
+    "description": "3-комнатная №1004",
+    "rooms": 3,
+    "floor": "10 из 14",
+    "area": "56,8",
+    "price": 5700000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 42,
+    "description": "1-комнатная №1102",
+    "rooms": 1,
+    "floor": "11 из 14",
+    "area": "32,0",
+    "price": 3250000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 43,
+    "description": "4-комнатная №1205",
+    "rooms": 4,
+    "floor": "12 из 14",
+    "area": "80,9",
+    "price": 8100000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 44,
+    "description": "2-комнатная №1303",
+    "rooms": 2,
+    "floor": "13 из 14",
+    "area": "40,5",
+    "price": 4080000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 45,
+    "description": "3-комнатная №1404",
+    "rooms": 3,
+    "floor": "14 из 14",
+    "area": "57,3",
+    "price": 5800000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 46,
+    "description": "1-комнатная №108",
+    "rooms": 1,
+    "floor": "1 из 10",
+    "area": "30,0",
+    "price": 3050000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 47,
+    "description": "2-комнатная №206",
+    "rooms": 2,
+    "floor": "2 из 10",
+    "area": "39,7",
+    "price": 3950000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 48,
+    "description": "3-комнатная №305",
+    "rooms": 3,
+    "floor": "3 из 10",
+    "area": "55,1",
+    "price": 5550000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 49,
+    "description": "4-комнатная №406",
+    "rooms": 4,
+    "floor": "4 из 10",
+    "area": "78,5",
+    "price": 7850000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 50,
+    "description": "1-комнатная №503",
+    "rooms": 1,
+    "floor": "5 из 10",
+    "area": "31,5",
+    "price": 3200000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 51,
+    "description": "2-комнатная №604",
+    "rooms": 2,
+    "floor": "6 из 10",
+    "area": "41,0",
+    "price": 4100000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 52,
+    "description": "3-комнатная №705",
+    "rooms": 3,
+    "floor": "7 из 10",
+    "area": "56,2",
+    "price": 5650000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 53,
+    "description": "4-комнатная №806",
+    "rooms": 4,
+    "floor": "8 из 10",
+    "area": "81,1",
+    "price": 8150000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 54,
+    "description": "1-комнатная №903",
+    "rooms": 1,
+    "floor": "9 из 10",
+    "area": "32,2",
+    "price": 3280000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 55,
+    "description": "2-комнатная №1004",
+    "rooms": 2,
+    "floor": "10 из 10",
+    "area": "42,0",
+    "price": 4250000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 56,
+    "description": "3-комнатная №106",
+    "rooms": 3,
+    "floor": "1 из 13",
+    "area": "54,8",
+    "price": 5500000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 57,
+    "description": "4-комнатная №207",
+    "rooms": 4,
+    "floor": "2 из 13",
+    "area": "79,3",
+    "price": 7950000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 58,
+    "description": "1-комнатная №303",
+    "rooms": 1,
+    "floor": "3 из 13",
+    "area": "30,7",
+    "price": 3100000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 59,
+    "description": "2-комнатная №405",
+    "rooms": 2,
+    "floor": "4 из 13",
+    "area": "40,2",
+    "price": 4050000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 60,
+    "description": "3-комнатная №506",
+    "rooms": 3,
+    "floor": "5 из 13",
+    "area": "55,5",
+    "price": 5600000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 61,
+    "description": "4-комнатная №607",
+    "rooms": 4,
+    "floor": "6 из 13",
+    "area": "80,2",
+    "price": 8050000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 62,
+    "description": "1-комнатная №703",
+    "rooms": 1,
+    "floor": "7 из 13",
+    "area": "31,1",
+    "price": 3150000,
+    "image": "/images/flat_furniture.png"
+  },
+  {
+    "id": 63,
+    "description": "2-комнатная №805",
+    "rooms": 2,
+    "floor": "8 из 13",
+    "area": "41,4",
+    "price": 4180000,
+    "image": "/images/flat_furniture.png"
+  }
+]
