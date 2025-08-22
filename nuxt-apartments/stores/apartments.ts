@@ -182,18 +182,24 @@ export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>
     async applyFilters(filter: FilterState): Promise<void> {
       this.loading = true
       this.filter = { ...filter }
+      this.filterError = null
       this.visibleCount = 20
 
       const cacheKey = this.getCacheKey(filter, this.sortField, this.sortOrder)
       
       // Check cache first
       if (this.filterCache.has(cacheKey)) {
+        // Simulate network delay even for cached results
+        await new Promise(resolve => setTimeout(resolve, 800))
         this.filteredResult = this.filterCache.get(cacheKey) || []
         this.loading = false
         return
       }
 
       try {
+        // Simulate network delay for new filter requests
+        await new Promise(resolve => setTimeout(resolve, 1500))
+        
         // Apply filters
         this.filteredResult = this.apartments.filter((apt: Apartment) =>
           this.matchesFilter(apt, filter)
@@ -208,7 +214,7 @@ export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>
         this.filterCache.set(cacheKey, [...this.filteredResult])
       } catch (error) {
         console.error('Error applying filters:', error)
-        this.filterError = 'Error applying filters. Please try again.'
+        this.filterError = 'Ошибка при применении фильтров. Пожалуйста, попробуйте еще раз.'
         this.filteredResult = []
       } finally {
         this.loading = false

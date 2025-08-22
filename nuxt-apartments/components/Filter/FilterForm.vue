@@ -1,5 +1,14 @@
 <template>
   <form class="filter" @submit.prevent="apply">
+    <!-- Loading Overlay -->
+    <div v-if="store.loading" class="filter-loading-overlay">
+      <div class="filter-loading-spinner"></div>
+    </div>
+    
+    <!-- Error Message -->
+    <div v-if="store.filterError" class="filter-error-message">
+      {{ store.filterError }}
+    </div>
     <div class="filter-buttons">
       <button
         v-for="n in [1, 2, 3, 4, 5]"
@@ -95,8 +104,6 @@
         </svg>
       </button>
     </div>
-
-    <div v-if="store.loading" class="filter-loading">Применяем фильтры...</div>
   </form>
 </template>
 
