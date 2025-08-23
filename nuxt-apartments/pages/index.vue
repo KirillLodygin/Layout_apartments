@@ -39,14 +39,14 @@
   const store = useApartmentsStore()
   const showScrollTop = ref(false)
 
-  onMounted(() => {
+  onMounted((): void => {
     store.loadApartments()
     window.addEventListener('scroll', () => {
       showScrollTop.value = window.scrollY > 400
     })
   })
 
-  function onSort({ field, order }: { field: string; order: "asc" | "desc" }) {
+  const onSort = ({ field, order }: { field: string; order: 'asc' | 'desc' }) => {
     store.sortApartments(field, order)
   }
 

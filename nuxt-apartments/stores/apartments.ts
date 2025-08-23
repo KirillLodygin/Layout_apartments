@@ -119,13 +119,10 @@ export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>
       const order = this.sortOrder
 
       return [...list].sort((a, b) => {
-        // Get values to compare
         const aValue = a[field as keyof Apartment]
         const bValue = b[field as keyof Apartment]
 
-        // Handle different field types
         if (field === SortField.FLOOR) {
-          // Special handling for floor values (e.g., "2 из 5")
           const getFloorNumber = (s: string): number => {
             const match = String(s).match(/(\d+)/)
             return match ? parseInt(match[1], 10) : 0
@@ -136,14 +133,12 @@ export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>
           return order === SortOrder.ASC ? aNum - bNum : bNum - aNum
         }
         
-        // Handle numeric fields
         if (field === SortField.AREA || field === SortField.PRICE || field === SortField.ROOMS) {
           const aNum = Number(aValue) || 0
           const bNum = Number(bValue) || 0
           return order === SortOrder.ASC ? aNum - bNum : bNum - aNum
         }
         
-        // Handle string fields
         const aStr = String(aValue).toLowerCase()
         const bStr = String(bValue).toLowerCase()
         
@@ -161,7 +156,6 @@ export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>
       this.filterError = null
 
       try {
-        // In a real app, this would be an API call
         const response = await fetch('/apartments.json')
         const data = await response.json()
         this.apartments = this.parseApartmentData(data)
@@ -189,7 +183,6 @@ export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>
       
       // Check cache first
       if (this.filterCache.has(cacheKey)) {
-        // Simulate network delay even for cached results
         await new Promise(resolve => setTimeout(resolve, 800))
         this.filteredResult = this.filterCache.get(cacheKey) || []
         this.loading = false
@@ -197,20 +190,16 @@ export const useApartmentsStore = defineStore<string, ApartmentsState, any, any>
       }
 
       try {
-        // Simulate network delay for new filter requests
         await new Promise(resolve => setTimeout(resolve, 1500))
         
-        // Apply filters
         this.filteredResult = this.apartments.filter((apt: Apartment) =>
           this.matchesFilter(apt, filter)
         )
 
-        // Sort after filtering
         if (this.sortField) {
           this.filteredResult = this.sortApartmentsInternal(this.filteredResult)
         }
 
-        // Cache the result
         this.filterCache.set(cacheKey, [...this.filteredResult])
       } catch (error) {
         console.error('Error applying filters:', error)
