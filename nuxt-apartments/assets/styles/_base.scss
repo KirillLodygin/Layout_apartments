@@ -1,0 +1,321 @@
+/* ==========================================================================
+   Base styles with cross-browser support
+   ========================================================================== */
+
+@use 'sass:list';
+
+/* PT Root UI Font Faces */
+@font-face {
+  font-family: 'PT Root UI';
+  src: url('../fonts/pt-root-ui_light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PT Root UI';
+  src: url('../fonts/pt-root-ui_regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PT Root UI';
+  src: url('../fonts/pt-root-ui_medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PT Root UI';
+  src: url('~assets/fonts/pt-root-ui_bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
+ * 1. Prevent adjustments of font size after orientation changes in IE and iOS.
+ * 2. Smooth scrolling for all elements where supported
+ */
+html {
+  -ms-text-size-adjust: 100%; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 1 */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+}
+
+/**
+ * Smooth scrolling for the html element when prefers-reduced-motion is not set to reduce
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Fallback for IE11 */
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/**
+ * CSS Custom Properties with fallbacks for IE11
+ * This mixin provides a fallback for browsers that don't support CSS variables
+ */
+@mixin css-vars($variables) {
+  :root {
+    @each $name, $value in $variables {
+      --#{$name}: #{$value};
+    }
+  }
+  
+  // Fallback for IE11
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    @each $name, $value in $variables {
+      .#{$name} {
+        content: $value;
+      }
+    }
+  }
+}
+
+/**
+ * Transition mixin with vendor prefixes
+ */
+@mixin transition($properties...) {
+  $transition: ();
+  
+  @each $prop in $properties {
+    $transition: list.append($transition, $prop 0.3s ease, $separator: comma);
+  }
+  
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -ms-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
+}
+
+/**
+ * Transform mixin with vendor prefixes
+ */
+@mixin transform($property) {
+  -webkit-transform: $property;
+  -ms-transform: $property;
+  transform: $property;
+}
+
+/**
+ * Box sizing border-box for all elements
+ */
+*, 
+*::before, 
+*::after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/**
+ * 1. Remove the margin in all browsers.
+ * 2. Set default font family and smoothing
+ */
+body {
+  margin: 0; /* 1 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/**
+ * 1. Add the correct box sizing in IE 10-.
+ * 2. Remove the padding in IE 10-.
+ */
+[type="checkbox"],
+[type="radio"] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+a {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+
+/**
+ * Remove the border on images inside links in IE 10-.
+ */
+img {
+  border-style: none;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/**
+ * 1. Change the font styles in all browsers.
+ * 2. Remove the margin in Firefox and Safari.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+/**
+ * Show the overflow in IE.
+ * 1. Show the overflow in Edge.
+ */
+button,
+input { /* 1 */
+  overflow: visible;
+}
+
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of text transform in Firefox.
+ */
+button,
+select { /* 1 */
+  text-transform: none;
+}
+
+/**
+ * Correct the inability to style clickable types in iOS and Safari.
+ */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button; /* Safari */
+  -moz-appearance: button;    /* Firefox */
+  appearance: button;         /* Standard */
+}
+
+/**
+ * Remove the inner border and padding in Firefox.
+ */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/**
+ * Restore the focus styles unset by the previous rule.
+ */
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/**
+ * Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ */
+progress {
+  vertical-align: baseline;
+}
+
+/**
+ * Remove the default vertical scrollbar in IE 10+.
+ */
+textarea {
+  overflow: auto;
+}
+
+/**
+ * 1. Add the correct box sizing in IE 10.
+ * 2. Remove the padding in IE 10.
+ */
+[type="checkbox"],
+[type="radio"] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * Correct the cursor style of increment and decrement buttons in Chrome.
+ */
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+ * 1. Correct the odd appearance in Chrome and Safari.
+ * 2. Correct the outline style in Safari.
+ */
+[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  -moz-appearance: textfield;    /* Firefox */
+  appearance: textfield;         /* Standard */
+  outline-offset: -2px; /* 2 */
+}
+
+/**
+ * Remove the inner padding in Chrome and Safari on macOS.
+ */
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+ * 1. Correct the inability to style clickable types in iOS and Safari.
+ * 2. Change font properties to `inherit` in Safari.
+ */
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+ * Add the correct display in all browsers.
+ */
+summary {
+  display: list-item;
+}
+
+/*
+ * Remove the padding so developers are not caught out when they zero out
+ * `fieldset` elements in all browsers.
+ */
+legend {
+  padding: 0;
+}
+
+/*
+ * Add the correct display in IE 10+.
+ */
+template {
+  display: none;
+}
+
+/*
+ * Add the correct display in IE 10+.
+ */
+[hidden] {
+  display: none;
+}
