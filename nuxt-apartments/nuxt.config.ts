@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-    css: ['@/assets/styles/base.scss', '@/assets/styles/main.scss'],
+    css: ['@/assets/styles/_base.scss', '@/assets/styles/main.scss'],
     build: {
         transpile: ['pinia']
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="apartments__card">
     <div class="apartments__card-image">
-      <img :src="apartment.image" alt="Квартира" loading="lazy" />
+      <img :src="apartment.image" alt="Квартира" />
     </div>
 
     <div class="apartments__card-info">
